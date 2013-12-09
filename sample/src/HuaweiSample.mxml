@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<s:Application xmlns:fx="http://ns.adobe.com/mxml/2009" 
+			   xmlns:s="library://ns.adobe.com/flex/spark" 
+			   applicationComplete="handler_application1applicationComplete(event)">
+	
+	<fx:Script>
+	<![CDATA[
+		import mx.events.FlexEvent;
+		
+		import us.sanguo.ane.huawei.HuaweiIAB;
+		
+		protected function handler_application1applicationComplete($evt:FlexEvent):void
+		{
+			HuaweiIAB.iab.addEventListener(StatusEvent.STATUS, handler_status);
+			HuaweiIAB.iab.initIAB(
+				"MIIBVAIBADANBgkqhkiG9w0BAQEFAASCAT4wggE6AgEAAkEAgv/vOAb0oKObkh4YXOryhVrEKoUn36b/esYxdTan0r5scs9HWbdz1MxlEaORltNnQb9Us87oHGI/7D5Uz5nd8QIDAQABAkATVcUwJs6qext2KJz98euTxT7Y68hj2Vkx/NjF7Sg+EYgQouZ5/yMmwQDESaJgTzrmq8KuclhFnxoCiAzhmiYFAiEA3cd5ujeP3xNJ6kU4pTgcGn8It4BAEt8BerwCCo/OND8CIQCXNpHWJ3wAeRihdPBYKkWgE4w1Byy7rNBie2wTXn6hzwIhAJIWrgaORwUozY22H0QmG80QVQubPZmwsGbKpYWTiL89AiBduq6VLy5W4Lkaw3CDRdiYi+VZrVPWFR2qHdT1AJq/0wIgL4lKdiI6fXV0hO8KLQ4KF/WTwtk7pXJWvDuOMtK/GL4=",
+				"Demo",
+				"10086000000000293",
+				"10064121",
+				"http://www.xxx.com/callback_url.php");
+		}
+		
+		protected function handler_payMent(event:MouseEvent):void
+		{
+			HuaweiIAB.iab.payMent("金宝箱", "120元宝", "1.00", "123123123123123");
+		}
+		
+		private function handler_status($evt:StatusEvent):void
+		{
+			showInfo("status info,code:", $evt.code, ",level:", $evt.level);
+		}
+		
+		private function showInfo(...$args):void
+		{
+			var __info:String = '';
+			for (var i:int = 0; i < $args.length; i++) 
+				
+			{
+				__info += $args[i] + File.lineEnding;
+			}
+			infoTA.appendText(__info);
+		}
+		
+		private function clearInfo():void
+		{
+			infoTA.text = '';
+		}
+		
+		protected function handler_exit(event:MouseEvent):void
+		{
+			NativeApplication.nativeApplication.exit();
+		}
+	]]>
+	</fx:Script>
+	<s:layout>
+		<s:VerticalLayout/>
+	</s:layout>
+	<s:TileGroup width="100%">
+		<s:Button id="payMentBTN" label="购买产品" click="handler_payMent(event)" bottom="20" horizontalCenter="0" width="200" height="100"/>
+	</s:TileGroup>
+	<s:TileGroup width="100%">
+	</s:TileGroup>
+	<s:TileGroup width="100%">
+		<s:Button id="exitBTN" label="退出" click="handler_exit(event)" bottom="20" horizontalCenter="0" width="200" height="100"/>
+	</s:TileGroup>
+	<s:VGroup width="100%" height="100%">
+		<s:TextArea id="infoTA" width="100%" height="100%"/>
+		<s:Button id="clearInfoBTN" label="清除" click="clearInfo()"/>
+	</s:VGroup>
+</s:Application>
